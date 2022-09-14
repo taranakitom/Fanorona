@@ -46,7 +46,7 @@ def play():
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
 
-        board.draw_board(SCREEN)
+        board.draw(SCREEN)
 
         for button in [PLAY_BACK]:
             button.changeColor(PLAY_MOUSE_POS)

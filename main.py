@@ -16,6 +16,12 @@ clock = pygame.time.Clock()
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
+def get_mouse_row_col(pos):
+    x, y = pos
+    row = y // 82 - 2
+    col = x // 82 - 3
+    return row, col
+
 def play():
     pygame.display.set_caption("Play")
     player = 1
@@ -59,6 +65,9 @@ def play():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
+                row, col = get_mouse_row_col(PLAY_MOUSE_POS)
+                piece = board.get_piece(row, col)
+                
         
         pygame.display.update()
         

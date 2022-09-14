@@ -22,3 +22,7 @@ class Piece:
         pygame.draw.circle(screen, (128, 128, 128), (self.x, self.y), radius + self.OUTLINE)
         pygame.draw.circle(screen, self.colour, (self.x, self.y), radius)
 
+    def move(self, row, col):
+        self.row = row
+        self.col = col
+        self.calc_pos()

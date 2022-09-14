@@ -12,8 +12,15 @@ class Board:
         screen.blit(pygame.image.load("assets/board.png"), ((1280 - 821) / 2, 90))
         for row in range(5):
             for col in range(9):
-                pygame.draw.rect(screen, (0, 0, 0), (82 * col + 307, 82 * row + 165, 10, 10))
+                pygame.draw.circle(screen, (0, 0, 0), (82 * col + 314, 82 * row + 170), 10)
     
+    def move(self, piece, row, col):
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        piece.move(row, col)
+    
+    def get_piece(self, row, col):
+        return self.board[row][col]
+
     def create_board(self):
         for row in range(5):
             self.board.append([])

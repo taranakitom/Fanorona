@@ -1,5 +1,6 @@
 import pygame, sys
 from button import Button
+from fanorona.board import Board
 
 pygame.init()
 
@@ -18,6 +19,7 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 def play():
     pygame.display.set_caption("Play")
     player = 1
+    board = Board()
     while True:
         clock.tick(FPS)
 
@@ -43,6 +45,8 @@ def play():
 
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
+
+        board.draw_board(SCREEN)
 
         for button in [PLAY_BACK]:
             button.changeColor(PLAY_MOUSE_POS)

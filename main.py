@@ -27,8 +27,6 @@ def learn():
         PAGE_NUMBER_TEXT = get_font(50).render(f"Page: {str(page)}", True, "#b68f40")
         PAGE_NUMBER_RECT = PAGE_NUMBER_TEXT.get_rect(center=(640, 50))
 
-        PAGE_RECT = pygame.Rect((10, 10), (640, 360))
-
         LEARN_BACK = Button(image=None, pos=(200, 650), 
                             text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
         LEARN_BACKWARDS = Button(image=pygame.transform.scale(pygame.image.load("assets/arrow_left.jpg"), (100, 100)), pos=(1100, 650), 
@@ -37,7 +35,7 @@ def learn():
                             text_input="", font=get_font(75), base_color="White", hovering_color="Green")
 
         SCREEN.blit(PAGE_NUMBER_TEXT, PAGE_NUMBER_RECT)
-        SCREEN.blit(pygame.image.load(f"assets/learning_pages/{page}.jpg"), PAGE_RECT)
+        SCREEN.blit(pygame.image.load(f"assets/learning_pages/{page}.png"), ((SCREEN_WIDTH - 1100) / 2, 90))
 
         LEARN_BACK.changeColor(LEARN_MOUSE_POS)
         LEARN_BACK.update(SCREEN)
@@ -54,23 +52,23 @@ def learn():
                 if LEARN_BACK.checkForInput(LEARN_MOUSE_POS):
                     main_menu()
                 if LEARN_BACKWARDS.checkForInput(LEARN_MOUSE_POS):
-                    if page < 2:
+                    if page <= 1:
                         pass
                     else:
                         page -= 1
                 if LEARN_FORWARDS.checkForInput(LEARN_MOUSE_POS):
-                    if page > 9:
+                    if page >= 9:
                         pass
                     else:
                         page += 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    if page < 2:
+                    if page <= 1:
                         pass
                     else:
                         page -= 1
                 if event.key == pygame.K_RIGHT:
-                    if page > 9:
+                    if page >= 9:
                         pass
                     else:
                         page += 1
@@ -85,8 +83,12 @@ def credits():
 
         SCREEN.fill("black")
 
-        CREDITS_BACK = Button(image=None, pos=(200, 600), 
+        CREDITS_RECT = pygame.Rect((10, 10), (640, 360))
+
+        CREDITS_BACK = Button(image=None, pos=(200, 650), 
                             text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+
+        SCREEN.blit(pygame.image.load(f"assets/credits.png"), CREDITS_RECT)
 
         CREDITS_BACK.changeColor(CREDITS_MOUSE_POS)
         CREDITS_BACK.update(SCREEN)

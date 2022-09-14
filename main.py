@@ -4,22 +4,67 @@ from button import Button
 pygame.init()
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 720
+FPS = 60
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 BG = pygame.image.load("assets/Background.png")
+
+clock = pygame.time.Clock()
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
 def play():
     pygame.display.set_caption("Play")
+    player = 1
+    while True:
+        clock.tick(FPS)
 
+        SCREEN.fill("black")
+
+        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+
+        if player == 1:
+            PLAYER1_TEXT = get_font(75).render("1", True, "Green")
+            PLAYER2_TEXT = get_font(75).render("2", True, "White")
+        else:
+            PLAYER1_TEXT = get_font(75).render("1", True, "White")
+            PLAYER2_TEXT = get_font(75).render("2", True, "Green")
+        
+        PLAYER1_RECT = PLAYER1_TEXT.get_rect(center=(1100, 650))
+        PLAYER2_RECT = PLAYER2_TEXT.get_rect(center=(1200, 650))
+
+        PLAY_BACK = Button(image=None, pos=(200, 650), 
+                            text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+
+        SCREEN.blit(PLAYER1_TEXT, PLAYER1_RECT)
+        SCREEN.blit(PLAYER2_TEXT, PLAYER2_RECT)
+
+        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
+        PLAY_BACK.update(SCREEN)
+
+        for button in [PLAY_BACK]:
+            button.changeColor(PLAY_MOUSE_POS)
+            button.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
+                    main_menu()
+        
+        pygame.display.update()
+        
 def learn():
     pygame.display.set_caption("Learn")
     page = 1
     
     while True:
+        clock.tick(FPS)
+
         SCREEN.fill("black")
         
         LEARN_MOUSE_POS = pygame.mouse.get_pos()
@@ -79,9 +124,11 @@ def learn():
 def credits():
     pygame.display.set_caption("Credits")
     while True:
-        CREDITS_MOUSE_POS = pygame.mouse.get_pos()
+        clock.tick(FPS)
 
         SCREEN.fill("black")
+
+        CREDITS_MOUSE_POS = pygame.mouse.get_pos()
 
         CREDITS_RECT = pygame.Rect((10, 10), (640, 360))
 
@@ -106,6 +153,8 @@ def credits():
 def main_menu():
     pygame.display.set_caption("Main menu")
     while True:
+        clock.tick(FPS)
+
         SCREEN.blit(BG, (0, 0))
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()

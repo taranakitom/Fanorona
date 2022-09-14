@@ -1,6 +1,7 @@
 import pygame, sys
 from button import Button
 from fanorona.board import Board
+from fanorona.game import Game
 
 pygame.init()
 
@@ -25,7 +26,7 @@ def get_mouse_row_col(pos):
 def play():
     pygame.display.set_caption("Play")
     player = 1
-    board = Board()
+    game = Game(SCREEN)
     while True:
         clock.tick(FPS)
 
@@ -33,7 +34,7 @@ def play():
 
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
-        if player == 1:
+        if game.turn == (255, 255, 255):
             PLAYER1_TEXT = get_font(75).render("1", True, "Green")
             PLAYER2_TEXT = get_font(75).render("2", True, "White")
         else:
@@ -52,8 +53,6 @@ def play():
         PLAY_BACK.changeColor(PLAY_MOUSE_POS)
         PLAY_BACK.update(SCREEN)
 
-        board.draw(SCREEN)
-
         for button in [PLAY_BACK]:
             button.changeColor(PLAY_MOUSE_POS)
             button.update(SCREEN)
@@ -66,10 +65,9 @@ def play():
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
                 row, col = get_mouse_row_col(PLAY_MOUSE_POS)
-                piece = board.get_piece(row, col)
+                game.select(row, col)
                 
-        
-        pygame.display.update()
+        game.update()
         
 def learn():
     pygame.display.set_caption("Learn")

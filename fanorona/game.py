@@ -39,7 +39,10 @@ class Game:
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
             self.board.move(self.selected, row, col)
-            self.change_turn()
+            taken = self.valid_moves[(row, col)]
+            if taken:
+                self.board.remove(taken)
+            self.change_turn(row, col)
         else:
             return False
 
@@ -51,8 +54,11 @@ class Game:
             pygame.draw.circle(self.screen, (0, 0, 255), (82 * col + 314, 82 * row + 170), 10)
         
 
-    def change_turn(self):
-        if self.turn == (255, 255, 255):
-            self.turn == (0, 0, 0)
-        else:
-            self.turn == (255, 255, 255)
+    def change_turn(self, row, col):
+        if len(self.valid_moves[(row, col)]) == 0:
+            if self.turn == (255, 255, 255):
+                self.turn = (0, 0, 0)
+            else:
+                self.turn = (255, 255, 255)
+        self.valid_moves = {}
+        

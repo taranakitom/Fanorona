@@ -44,6 +44,10 @@ class Board:
                 if piece != 0:
                     piece.draw(screen)
 
+    def remove(self, pieces):
+        for piece in pieces:
+            self.board[piece.row][piece.col] = 0
+
     def get_valid_moves(self, piece, turn):
         moves = {}
         left = piece.col - 1
@@ -54,56 +58,90 @@ class Board:
         if self.get_piece(piece.row, left) == 0 and left >= 0:
             taken = []
             for other_piece in self.board[piece.row]:
-                for skip in range(len(self.board[piece.row]) - left):
-                    if other_piece == 0:
-                        continue
-                    if other_piece.colour != turn:
-                        taken.append((other_piece.row, other_piece.col))
-                    else:
-                        taken = []
-                pass
+                if other_piece == 0:
+                    continue
+                passed = other_piece.col > piece.col # if other_piece is past piece
+                if passed: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        break # exit the for loop
+                else: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        if other_piece.col == piece.col:
+                            continue
+                        else:
+                            taken = [] # clear the taken pieces
             
             moves.update({(piece.row, left): taken})
 
         if self.get_piece(piece.row, right) == 0 and right <= 8:
             taken = []
             for other_piece in self.board[piece.row]:
-                for skip in range(len(self.board[piece.row]) - right):
-                    pass
                 if other_piece == 0:
                     continue
-                if other_piece.colour != turn:
-                    taken.append((other_piece.row, other_piece.col))
-                else:
-                    continue
+                passed = other_piece.col > piece.col # if other_piece is past piece
+                if passed: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        break # exit the for loop
+                else: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        if other_piece.col == piece.col:
+                            continue
+                        else:
+                            taken = [] # clear the taken pieces
             
             moves.update({(piece.row, right): taken})
 
         if self.get_piece(up, piece.col) == 0 and up >= 0:
             taken = []
             for row in self.board:
-                for skip in range(len(self.board) - up):
-                    pass
-                if piece == 0:
+                other_piece = row[piece.col]
+                if other_piece == 0:
                     continue
-                if piece.colour != turn:
-                    taken.append((piece.row, piece.col))
+                passed = other_piece.row > piece.row # if other_piece is past piece
+                if passed: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        break # exit the for loop
                 else:
-                    continue
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        if other_piece.row == piece.row:
+                            continue
+                        else:
+                            taken = [] # clear the taken pieces
             
             moves.update({(up, piece.col): taken})
 
         if self.get_piece(down, piece.col) == 0 and down <= 4:
             taken = []
             for row in self.board:
-                for skip in range(len(self.board) - down):
-                    if piece == 0:
-                        continue
-                    if piece.colour != turn:
-                        taken.append((piece.row, piece.col))
-                    else:
-                        taken = []
-                pass
+                other_piece = row[piece.col]
+                if other_piece == 0:
+                    continue
+                passed = other_piece.row > piece.row # if other_piece is past piece
+                if passed: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        break # exit the for loop
+                else: 
+                    if other_piece.colour != turn: # if other_piece is an opp
+                        taken.append(other_piece) # add to taken
+                    else: # it's your piece
+                        if other_piece.row == piece.row:
+                            continue
+                        else:
+                            taken = [] # clear the taken pieces
             
             moves.update({(down, piece.col): taken})
         

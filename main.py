@@ -123,7 +123,7 @@ def learn():
                         pass
                     else:
                         page -= 1
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_SPACE:
                     if page >= 9:
                         pass
                     else:

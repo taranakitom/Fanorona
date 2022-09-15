@@ -2,11 +2,9 @@ import pygame, sys
 from button import Button
 from fanorona.board import Board
 from fanorona.game import Game
+from fanorona.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, BOARD_WIDTH, BOARD_HEIGHT, WHITE, ROW_RECTS, COL_RECTS
 
 pygame.init()
-
-SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 720
-FPS = 60
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -18,23 +16,28 @@ def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
 def get_mouse_row_col(pos):
-    x, y = pos
-    row = y // 82 - 2
-    col = x // 82 - 3
-    return row, col
+    for rect in ROW_RECTS:
+        if pos[1] > rect.top and pos[1] < rect.top + rect.height:
+            for column in COL_RECTS:
+                if pos[0] > column.left and pos[0] < column.left + column.width:
+                    return ROW_RECTS.index(rect), COL_RECTS.index(column)
+    return None, None
 
 def play():
     pygame.display.set_caption("Play")
-    player = 1
+    player = WHITE
     game = Game(SCREEN)
     while True:
         clock.tick(FPS)
+
+        if game.board.winner() != None:
+            winner(game.board.winner())
 
         SCREEN.fill("black")
 
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
-        if game.turn == (255, 255, 255):
+        if game.turn == WHITE:
             PLAYER1_TEXT = get_font(75).render("1", True, "Green")
             PLAYER2_TEXT = get_font(75).render("2", True, "White")
         else:
@@ -65,10 +68,45 @@ def play():
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
                 row, col = get_mouse_row_col(PLAY_MOUSE_POS)
-                game.select(row, col)
+                if row != None and col != None:
+                    game.select(row, col)
                 
         game.update()
+
+def winner(colour):
+    pygame.display.set_caption("Winner")
+    while True:
+        clock.tick(FPS)
+
+        SCREEN.fill("black")
+
+        WINNER_MOUSE_POS = pygame.mouse.get_pos()
+
+        WINNER_TEXT = get_font(100).render(f"{colour} wins!", True, "#b68f40")
+        WINNER_RECT = WINNER_TEXT.get_rect(center=(640, 100))
+
+        WINNER_BACK = Button(image=None, pos=(200, 650), 
+                            text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
         
+        SCREEN.blit(WINNER_TEXT, WINNER_RECT)
+
+        WINNER_BACK.changeColor(WINNER_MOUSE_POS)
+        WINNER_BACK.update(SCREEN)
+
+        for button in [WINNER_BACK]:
+            button.changeColor(WINNER_MOUSE_POS)
+            button.update(SCREEN)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if WINNER_BACK.checkForInput(WINNER_MOUSE_POS):
+                    main_menu()
+        
+        pygame.display.update()
+
 def learn():
     pygame.display.set_caption("Learn")
     page = 1

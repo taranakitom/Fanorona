@@ -1,5 +1,6 @@
 import pygame
 from .piece import Piece
+from .constants import BLACK, WHITE, SCREEN_WIDTH, BOARD_WIDTH
 
 class Board:
     def __init__(self):
@@ -8,10 +9,10 @@ class Board:
         self.create_board()
     
     def draw_board(self, screen):
-        screen.blit(pygame.image.load("assets/board.png"), ((1280 - 821) / 2, 90))
+        screen.blit(pygame.image.load("assets/board.png"), ((SCREEN_WIDTH - BOARD_WIDTH) / 2, 90))
         for row in range(5):
             for col in range(9):
-                pygame.draw.circle(screen, (0, 0, 0), (82 * col + 314, 82 * row + 170), 10)
+                pygame.draw.circle(screen, BLACK, (82 * col + 314, 82 * row + 170), 10)
     
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
@@ -25,16 +26,16 @@ class Board:
             self.board.append([])
             for col in range(9):
                 if row < 2:
-                    self.board[row].append(Piece(row, col, (0, 0, 0)))
+                    self.board[row].append(Piece(row, col, BLACK))
                 elif row > 2:
-                    self.board[row].append(Piece(row, col, (255, 255, 255)))
+                    self.board[row].append(Piece(row, col, WHITE))
                 else:
                     if col == 0 or col == 2 or col == 5 or col == 7:
-                        self.board[row].append(Piece(row, col, (0, 0, 0)))
+                        self.board[row].append(Piece(row, col, BLACK))
                     elif col == 4:
                         self.board[row].append(0)
                     else:
-                        self.board[row].append(Piece(row, col, (255, 255, 255)))
+                        self.board[row].append(Piece(row, col, WHITE))
                 
     def draw(self, screen):
         self.draw_board(screen)
@@ -46,7 +47,19 @@ class Board:
 
     def remove(self, pieces):
         for piece in pieces:
+            if piece.colour == WHITE:
+                self.white_left -= 1
+            else:
+                self.black_left -= 1
             self.board[piece.row][piece.col] = 0
+            
+    def winner(self):
+        if self.white_left <= 0:
+            return "White"
+        elif self.black_left <= 0:
+            return "Black"
+        
+        return None
 
     def get_valid_moves(self, piece, turn):
         moves = {}

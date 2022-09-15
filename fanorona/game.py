@@ -1,5 +1,6 @@
 import pygame
 from .board import Board
+from .constants import BLACK, WHITE, BLUE, COL_RECTS, ROW_RECTS
 
 class Game:
     def __init__(self, screen):
@@ -14,7 +15,7 @@ class Game:
     def _init(self):
         self.selected = None
         self.board = Board()
-        self.turn = (255, 255, 255)
+        self.turn = WHITE
         self.valid_moves = {}
     
     def reset(self):
@@ -51,14 +52,14 @@ class Game:
     def draw_valid_moves(self, moves):
         for move in moves:
             row, col = move
-            pygame.draw.circle(self.screen, (0, 0, 255), (82 * col + 314, 82 * row + 170), 10)
+            pygame.draw.circle(self.screen, BLUE, (82 * col + 314, 82 * row + 170), 10)
         
 
     def change_turn(self, row, col):
         if len(self.valid_moves[(row, col)]) == 0:
-            if self.turn == (255, 255, 255):
-                self.turn = (0, 0, 0)
+            if self.turn == WHITE:
+                self.turn = BLACK
             else:
-                self.turn = (255, 255, 255)
+                self.turn = WHITE
         self.valid_moves = {}
         

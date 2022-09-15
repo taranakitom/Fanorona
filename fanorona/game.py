@@ -17,6 +17,7 @@ class Game:
         self.board = Board()
         self.turn = WHITE
         self.valid_moves = {}
+        self.previous_piece = None
     
     def reset(self):
         self._init()
@@ -31,7 +32,7 @@ class Game:
         piece = self.board.get_piece(row, col)
         if piece != 0 and piece.colour == self.turn:
             self.selected = piece
-            self.valid_moves = self.board.get_valid_moves(piece, self.turn)
+            self.valid_moves = self.board.get_valid_moves(piece, self.turn, self.previous_piece)
             return True
         
         return False
@@ -40,6 +41,7 @@ class Game:
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
             self.board.move(self.selected, row, col)
+            self.previous_piece = (row, col)
             taken = self.valid_moves[(row, col)]
             if taken:
                 self.board.remove(taken)
@@ -59,7 +61,9 @@ class Game:
         if len(self.valid_moves[(row, col)]) == 0:
             if self.turn == WHITE:
                 self.turn = BLACK
+                self.previous_piece = None
             else:
                 self.turn = WHITE
+                self.previous_piece = None
         self.valid_moves = {}
         

@@ -61,12 +61,16 @@ class Board:
         
         return None
 
-    def get_valid_moves(self, piece, turn):
+    def get_valid_moves(self, piece, turn, previous_piece):
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
         up = piece.row - 1
         down = piece.row + 1
+
+        if previous_piece != None:
+            if self.get_piece(previous_piece[0], previous_piece[1]) != piece:
+                return moves
 
         if self.get_piece(piece.row, left) == 0 and left >= 0:
             taken = []

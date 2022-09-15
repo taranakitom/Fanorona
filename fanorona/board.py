@@ -55,22 +55,26 @@ class Board:
             
     def winner(self):
         if self.white_left <= 0:
-            return "White"
-        elif self.black_left <= 0:
             return "Black"
+        elif self.black_left <= 0:
+            return "White"
         
         return None
 
-    def get_valid_moves(self, piece, turn, previous_piece):
+    def get_valid_moves(self, piece, turn, previous_piece, previous_move):
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
         up = piece.row - 1
         down = piece.row + 1
 
-        if previous_piece != None:
-            if self.get_piece(previous_piece[0], previous_piece[1]) != piece:
-                return moves
+        upleft = (up, left)
+        upright = (up, right)
+        downleft = (down, left)
+        downright = (down, right)
+
+        if previous_piece != None and self.get_piece(previous_piece[0], previous_piece[1]) != piece:
+            return moves
 
         if self.get_piece(piece.row, left) == 0 and left >= 0:
             taken = []
@@ -162,4 +166,19 @@ class Board:
             
             moves.update({(down, piece.col): taken})
         
+        if previous_move != None:
+            if previous_move[0] == 0:
+                pos = 1
+            else:
+                pos = 0
+
+            if previous_move[pos] == left and (piece.row, left) in moves:
+                moves.pop((piece.row, left))
+            elif previous_move[pos] == right and (piece.row, right) in moves:
+                moves.pop((piece.row, right))
+            elif previous_move[pos] == up and (up, piece.col) in moves:
+                moves.pop((up, piece.col))
+            elif previous_move[pos] == down and (down, piece.col) in moves:
+                moves.pop((down, piece.col))
+
         return moves

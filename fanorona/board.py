@@ -103,6 +103,7 @@ class Board:
 
         canupleft, canupright, candownleft, candownright = self.get_diagonals(piece.row, piece.col)
 
+        # "You must keep moving the same piece"
         if previous_piece != None and self.get_piece(previous_piece[0], previous_piece[1]) != piece:
             return moves
 
@@ -304,7 +305,7 @@ class Board:
 
                 moves.update({(down, right): taken})
 
-        if previous_move != None:
+        if previous_move != None: # cant move in the same dir twice
             if previous_move[0] == 0:
                 pos = 1
             else:

@@ -66,6 +66,17 @@ class Game:
                 self.turn = BLACK
             else:
                 self.turn = WHITE
-
-        self.valid_moves = {}
+            self.valid_moves = {}
+        else:
+            self.valid_moves = {}
+            moves = self.board.get_valid_moves(self.board.get_piece(row, col), self.turn, self.previous_piece, self.previous_move)
+            for move in moves:
+                if len(moves[move]) > 0:
+                    return
+            self.previous_piece = None
+            self.previous_move = None
+            if self.turn == WHITE:
+                self.turn = BLACK
+            else:
+                self.turn = WHITE
         

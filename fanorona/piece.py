@@ -1,9 +1,7 @@
 import pygame
+from .constants import PIECE_PADDING, PIECE_OUTLINE, GREY, SPACE_BETWEEN_PIECES, SPACE_LEFT_OF_PIECES, SPACE_ABOVE_PIECES
 
 class Piece:
-    PADDING = 15
-    OUTLINE = 2
-
     def __init__(self, row, col, colour):
         self.row = row
         self.col = col
@@ -14,12 +12,12 @@ class Piece:
         self.calc_pos()
 
     def calc_pos(self):
-        self.x = 82 * self.col + 312
-        self.y = 82 * self.row + 170
+        self.x = SPACE_BETWEEN_PIECES * self.col + SPACE_LEFT_OF_PIECES
+        self.y = SPACE_BETWEEN_PIECES * self.row + SPACE_ABOVE_PIECES
 
     def draw(self, screen):
-        radius = 82 // 2 - self.PADDING
-        pygame.draw.circle(screen, (128, 128, 128), (self.x, self.y), radius + self.OUTLINE)
+        radius = SPACE_BETWEEN_PIECES // 2 - PIECE_PADDING
+        pygame.draw.circle(screen, GREY, (self.x, self.y), radius + PIECE_OUTLINE)
         pygame.draw.circle(screen, self.colour, (self.x, self.y), radius)
 
     def move(self, row, col):

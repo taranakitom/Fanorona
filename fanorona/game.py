@@ -1,6 +1,6 @@
 import pygame
 from .board import Board
-from .constants import BLACK, WHITE, BLUE, COL_RECTS, ROW_RECTS
+from .constants import BLACK, WHITE, BLUE, COL_RECTS, ROW_RECTS, DOT_SIZE, SPACE_BETWEEN_PIECES, SPACE_LEFT_OF_PIECES, SPACE_ABOVE_PIECES
 
 class Game:
     def __init__(self, screen):
@@ -55,7 +55,7 @@ class Game:
     def draw_valid_moves(self, moves):
         for move in moves:
             row, col = move
-            pygame.draw.circle(self.screen, BLUE, (82 * col + 314, 82 * row + 170), 10)
+            pygame.draw.circle(self.screen, BLUE, (SPACE_LEFT_OF_PIECES + SPACE_BETWEEN_PIECES * col, SPACE_ABOVE_PIECES + SPACE_BETWEEN_PIECES * row), DOT_SIZE)
         
 
     def change_turn(self, row, col):

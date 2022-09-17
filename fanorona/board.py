@@ -1,6 +1,6 @@
 import pygame
 from .piece import Piece
-from .constants import BLACK, WHITE, SCREEN_WIDTH, BOARD_WIDTH
+from .constants import BLACK, WHITE, SPACE_EITHER_SIDE, SPACE_TOP_BOTTOM, DOT_SIZE, SPACE_BETWEEN_PIECES, COL_AMOUNT, ROW_AMOUNT, SPACE_LEFT_OF_PIECES, SPACE_ABOVE_PIECES
 
 class Board:
     def __init__(self):
@@ -9,22 +9,23 @@ class Board:
         self.create_board()
     
     def draw_board(self, screen):
-        screen.blit(pygame.image.load("assets/board.png"), ((SCREEN_WIDTH - BOARD_WIDTH) / 2, 90))
-        for row in range(5):
-            for col in range(9):
-                pygame.draw.circle(screen, BLACK, (82 * col + 314, 82 * row + 170), 10)
+        screen.blit(pygame.image.load("assets/board.png"), (SPACE_EITHER_SIDE, SPACE_TOP_BOTTOM))
+        for row in range(ROW_AMOUNT):
+            for col in range(COL_AMOUNT):
+                pygame.draw.circle(screen, BLACK, (SPACE_LEFT_OF_PIECES + SPACE_BETWEEN_PIECES * col, SPACE_ABOVE_PIECES + SPACE_BETWEEN_PIECES * row), DOT_SIZE)
     
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
     
     def get_piece(self, row, col):
+        print(f"{row}, {col}")
         return self.board[row][col]
 
     def create_board(self):
-        for row in range(5):
+        for row in range(ROW_AMOUNT):
             self.board.append([])
-            for col in range(9):
+            for col in range(COL_AMOUNT):
                 if row < 2:
                     self.board[row].append(Piece(row, col, BLACK))
                 elif row > 2:
@@ -39,8 +40,8 @@ class Board:
                 
     def draw(self, screen):
         self.draw_board(screen)
-        for row in range(5):
-            for col in range(9):
+        for row in range(ROW_AMOUNT):
+            for col in range(COL_AMOUNT):
                 piece = self.board[row][col]
                 if piece != 0:
                     piece.draw(screen)

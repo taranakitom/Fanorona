@@ -19,6 +19,7 @@ class Game:
         self.valid_moves = {}
         self.previous_piece = None
         self.previous_move = None
+        self.places_been = []
     
     def reset(self):
         self._init()
@@ -33,7 +34,7 @@ class Game:
         piece = self.board.get_piece(row, col)
         if piece != 0 and piece.colour == self.turn:
             self.selected = piece
-            self.valid_moves = self.board.get_valid_moves(piece, self.turn, self.previous_piece, self.previous_move)
+            self.valid_moves = self.board.get_valid_moves(piece, self.turn, self.previous_piece, self.previous_move, self.places_been)
             return True
         
         return False
@@ -41,8 +42,10 @@ class Game:
     def _move(self, row, col):
         piece = self.board.get_piece(row, col)
         if piece == 0 and (row, col) in self.valid_moves:
-            self.board.move(self.selected, row, col)
             self.previous_piece = (row, col)
+            self.places_been.append((self.selected.row, self.selected.col))
+            self.previous_move = (self.selected.row - row, self.selected.col - col)
+            self.board.move(self.selected, row, col)
             taken = self.valid_moves[(row, col)]
             if taken:
                 self.board.remove(taken)
@@ -62,6 +65,7 @@ class Game:
         if len(self.valid_moves[(row, col)]) == 0:
             self.previous_piece = None
             self.previous_move = None
+            self.places_been = []
             if self.turn == WHITE:
                 self.turn = BLACK
             else:
@@ -69,12 +73,13 @@ class Game:
             self.valid_moves = {}
         else:
             self.valid_moves = {}
-            moves = self.board.get_valid_moves(self.board.get_piece(row, col), self.turn, self.previous_piece, self.previous_move)
+            moves = self.board.get_valid_moves(self.board.get_piece(row, col), self.turn, self.previous_piece, self.previous_move, self.places_been)
             for move in moves:
                 if len(moves[move]) > 0:
                     return
             self.previous_piece = None
             self.previous_move = None
+            self.places_been = []
             if self.turn == WHITE:
                 self.turn = BLACK
             else:

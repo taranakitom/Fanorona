@@ -19,7 +19,6 @@ class Board:
         piece.move(row, col)
     
     def get_piece(self, row, col):
-        print(f"{row}, {col}")
         return self.board[row][col]
 
     def create_board(self):
@@ -95,7 +94,7 @@ class Board:
                     else: # if last col
                         return True, False, False, False
 
-    def get_valid_moves(self, piece, turn, previous_piece, previous_move):
+    def get_valid_moves(self, piece, turn, previous_piece, previous_move, places_been):
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
@@ -306,19 +305,29 @@ class Board:
 
                 moves.update({(down, right): taken})
 
-        if previous_move != None: # cant move in the same dir twice
-            if previous_move[0] == 0:
-                pos = 1
-            else:
-                pos = 0
-
-            if previous_move[pos] == left and (piece.row, left) in moves:
+        if len(places_been) > 0: # cant move in the same dir twice
+            print("places_been > 0")
+            print(places_been)
+            for place in places_been:
+                print(f"place = {place}")
+                if place in moves:
+                    moves.pop(place)
+            
+            if previous_move[0] == 0 and previous_move[1] == -1 and (piece.row, left) in moves:
                 moves.pop((piece.row, left))
-            elif previous_move[pos] == right and (piece.row, right) in moves:
+            elif previous_move[0] == 0 and previous_move[1] == 1 and (piece.row, right) in moves:
                 moves.pop((piece.row, right))
-            elif previous_move[pos] == up and (up, piece.col) in moves:
+            elif previous_move[0] == -1 and previous_move[1] == 0 and (up, piece.col) in moves:
                 moves.pop((up, piece.col))
-            elif previous_move[pos] == down and (down, piece.col) in moves:
+            elif previous_move[0] == 1 and previous_move[1] == 0 and (down, piece.col) in moves:
                 moves.pop((down, piece.col))
+            elif previous_move[0] == 1 and previous_move[1] == 1 and (up, left) in moves:
+                moves.pop((up, left))
+            elif previous_move[0] == 1 and previous_move[1] == -1 and (up, right) in moves:
+                moves.pop((up, right))
+            elif previous_move[0] == -1 and previous_move[1] == 1 and (down, left) in moves:
+                moves.pop((down, left))
+            elif previous_move[0] == -1 and previous_move[1] == -1 and (down, right) in moves:
+                moves.pop((down, right))
 
         return moves

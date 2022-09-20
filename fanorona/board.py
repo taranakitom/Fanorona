@@ -112,10 +112,10 @@ class Board:
             for other_piece in self.board[piece.row]:
                 if other_piece == 0:
                     continue
+                if other_piece.col == piece.col:
+                        continue
                 passed = other_piece.col > piece.col # if other_piece is past piece
-                if passed: 
-                    if self.get_piece(other_piece.row, left) == 0: # stop if passed and other_piece is 0
-                        break
+                if passed:
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
@@ -124,10 +124,7 @@ class Board:
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
-                        if other_piece.col == piece.col:
-                            continue
-                        else:
-                            taken = [] # clear the taken pieces
+                        taken = [] # clear the taken pieces
             
             moves.update({(piece.row, left): taken})
 
@@ -136,10 +133,10 @@ class Board:
             for other_piece in self.board[piece.row]:
                 if other_piece == 0:
                     continue
+                if other_piece.col == piece.col:
+                            continue
                 passed = other_piece.col > piece.col # if other_piece is past piece
                 if passed: 
-                    if self.get_piece(other_piece.row, left) == 0: # stop if passed and other_piece is 0
-                        break
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
@@ -148,10 +145,7 @@ class Board:
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
-                        if other_piece.col == piece.col:
-                            continue
-                        else:
-                            taken = [] # clear the taken pieces
+                        taken = [] # clear the taken pieces
             
             moves.update({(piece.row, right): taken})
 
@@ -161,10 +155,10 @@ class Board:
                 other_piece = row[piece.col]
                 if other_piece == 0:
                     continue
+                if other_piece.row == piece.row:
+                    continue
                 passed = other_piece.row > piece.row # if other_piece is past piece
                 if passed: 
-                    if self.get_piece(up, other_piece.col) == 0: # stop if passed and other_piece is 0
-                        break
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
@@ -173,10 +167,7 @@ class Board:
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
-                        if other_piece.row == piece.row:
-                            continue
-                        else:
-                            taken = [] # clear the taken pieces
+                        taken = [] # clear the taken pieces
             
             moves.update({(up, piece.col): taken})
 
@@ -186,10 +177,10 @@ class Board:
                 other_piece = row[piece.col]
                 if other_piece == 0:
                     continue
+                if other_piece.row == piece.row:
+                    continue
                 passed = other_piece.row > piece.row # if other_piece is past piece
                 if passed: 
-                    if self.get_piece(up, other_piece.col) == 0: # stop if passed and other_piece is 0
-                        break
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
@@ -198,10 +189,7 @@ class Board:
                     if other_piece.colour != turn: # if other_piece is an opp
                         taken.append(other_piece) # add to taken
                     else: # it's your piece
-                        if other_piece.row == piece.row:
-                            continue
-                        else:
-                            taken = [] # clear the taken pieces
+                        taken = [] # clear the taken pieces
             
             moves.update({(down, piece.col): taken})
         
@@ -214,15 +202,15 @@ class Board:
                     x += 1
                     if other_piece == 0:
                         continue
+                    if other_piece.row == piece.row: # if it's the piece you're moving
+                        continue
                     passed = other_piece.row > piece.row # if other_piece is past piece
                     if passed:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
                             break # exit the for loop
-                    else: 
-                        if other_piece.row == piece.row: # if it's the piece you're moving
-                                continue
+                    else:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
@@ -239,15 +227,15 @@ class Board:
                     x -= 1
                     if other_piece == 0:
                         continue
+                    if other_piece.row == piece.row: # if it's the piece you're moving
+                        continue
                     passed = other_piece.row > piece.row # if other_piece is past piece
                     if passed:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
                             break # exit the for loop
-                    else: 
-                        if other_piece.row == piece.row: # if it's the piece you're moving
-                                continue
+                    else:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
@@ -264,15 +252,15 @@ class Board:
                     x -= 1
                     if other_piece == 0:
                         continue
+                    if other_piece.row == piece.row: # if it's the piece you're moving
+                        continue
                     passed = other_piece.row > piece.row # if other_piece is past piece
                     if passed:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
                             break # exit the for loop
-                    else: 
-                        if other_piece.row == piece.row: # if it's the piece you're moving
-                                continue
+                    else:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
@@ -289,15 +277,15 @@ class Board:
                     x += 1
                     if other_piece == 0:
                         continue
+                    if other_piece.row == piece.row: # if it's the piece you're moving
+                        continue
                     passed = other_piece.row > piece.row # if other_piece is past piece
                     if passed:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
                             break # exit the for loop
-                    else: 
-                        if other_piece.row == piece.row: # if it's the piece you're moving
-                                continue
+                    else:
                         if other_piece.colour != turn: # if other_piece is an opp
                             taken.append(other_piece) # add to taken
                         else: # it's your piece
@@ -305,14 +293,22 @@ class Board:
 
                 moves.update({(down, right): taken})
 
-        if len(places_been) > 0: # cant move in the same dir twice
-            print("places_been > 0")
-            print(places_been)
+        taking_move = False
+        for move in moves:
+            if len(moves[move]) > 0: # if there is a taking move
+                taking_move = True
+        if taking_move:
+            for move in list(moves):
+                if len(moves[move]) == 0: # if the move takes nothing
+                    moves.pop(move)
+        
+        if len(places_been) > 0: 
+            # cant move to the same place twice on a turn
             for place in places_been:
-                print(f"place = {place}")
                 if place in moves:
                     moves.pop(place)
             
+            # cant move in the same direction twice in a row
             if previous_move[0] == 0 and previous_move[1] == -1 and (piece.row, left) in moves:
                 moves.pop((piece.row, left))
             elif previous_move[0] == 0 and previous_move[1] == 1 and (piece.row, right) in moves:

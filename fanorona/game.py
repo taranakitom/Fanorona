@@ -7,10 +7,15 @@ class Game:
         self._init()
         self.screen = screen
     
-    def update(self):
+    def update(self, pass_button, pos):
         self.board.draw(self.screen)
         self.draw_valid_moves()
         self.draw_selected()
+
+        if self.previous_move != None:
+            pass_button.changeColor(pos)
+            pass_button.update(self.screen)
+
         pygame.display.update()
 
     def _init(self):
@@ -49,11 +54,10 @@ class Game:
             self.places_been.append((self.selected.row, self.selected.col))
             self.previous_move = (self.selected.row - row, self.selected.col - col)
             self.board.move(self.selected, row, col)
-            self.selected = None
             taken = self.valid_moves[(row, col)]
             if taken:
                 self.board.remove(taken)
-            self.change_turn(row, col)
+            self.check_change_turn(row, col)
         else:
             return False
 
@@ -73,15 +77,10 @@ class Game:
             else:
                 pygame.draw.circle(self.screen, BLACK_RED, (self.selected.x, self.selected.y), radius)
 
-    def change_turn(self, row, col):
+    def check_change_turn(self, row, col):
+        self.selected = None
         if len(self.valid_moves[(row, col)]) == 0:
-            self.previous_piece = None
-            self.previous_move = None
-            self.places_been = []
-            if self.turn == WHITE:
-                self.turn = BLACK
-            else:
-                self.turn = WHITE
+            self.change_turn()
             self.valid_moves = {}
         else:
             self.valid_moves = {}
@@ -89,11 +88,16 @@ class Game:
             for move in moves:
                 if len(moves[move]) > 0:
                     return
-            self.previous_piece = None
-            self.previous_move = None
-            self.places_been = []
-            if self.turn == WHITE:
-                self.turn = BLACK
-            else:
-                self.turn = WHITE
-        
+            
+            self.change_turn()
+
+    def change_turn(self):
+        self.selected = None
+        self.previous_piece = None
+        self.previous_move = None
+        self.places_been = []
+        self.valid_moves = {}
+        if self.turn == WHITE:
+            self.turn = BLACK
+        else:
+            self.turn = WHITE

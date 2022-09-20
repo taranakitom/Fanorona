@@ -49,6 +49,8 @@ def play():
 
         PLAY_BACK = Button(image=None, pos=(200, 650), 
                             text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
+        PASS_BUTTON = Button(image=None, pos=(640, 50), 
+                            text_input="Pass?", font=get_font(50), base_color="White", hovering_color="Green")
 
         SCREEN.blit(PLAYER1_TEXT, PLAYER1_RECT)
         SCREEN.blit(PLAYER2_TEXT, PLAYER2_RECT)
@@ -67,11 +69,13 @@ def play():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
+                if PASS_BUTTON.checkForInput(PLAY_MOUSE_POS):
+                    game.change_turn()
                 row, col = get_mouse_row_col(PLAY_MOUSE_POS)
                 if row != None and col != None:
                     game.select(row, col)
                 
-        game.update()
+        game.update(PASS_BUTTON, PLAY_MOUSE_POS)
 
 def winner(colour):
     pygame.display.set_caption("Winner")
